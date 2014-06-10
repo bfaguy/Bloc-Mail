@@ -1,23 +1,30 @@
-MailChimp API v2.0 Ruby Example Application
-=============================================
-An example application utilizing our [official Ruby API wrapper](http://rubygems.org/gems/mailchimp-api). The purpose of the app is to demo setting up the wrapper in a common environment, make some basic API calls against our API, and consume/display the results. This will not necessarilly show an example of every available method or the numerous permutations of each. For that, the developer will be expected to refer to the [the API v2 docs](http://apidocs.mailchimp.com/api/2.0/) and wrapper source to test calls. This, however, should provide a simple framework to kickstart testing.
+Capstone Mailchimp
+==================
+Capstone Project for Bloc
 
-Community
+
+Purpose
+-------
+
+Create an application to allow users to manage online mailing lists (hosted by mailchimp). Application will allow users to view mailing lists, see the current members on each list, and remove old email addreses from the list. Additionally, a batch job will run in the background to automatically remove outdated email addresses. 
+Here is some background. The way we are using these email lists is to send confirmation type emails to recipients responding to the books they ordered. Emails will be of three varities: 1. confirm that an order has been received. 2. confirmed that an order is being processed / getting ready for shipment 3. confirm that the order is shipped. After the recipient receives the final email (#3), there is no need for her to remain on any of the emai lists. All recipients should be subscribed automatically to three email lists when they order from us. 
+
+
+User Requirements
+-----------------
+
+- [ ] As a user, I should be able to view a list of all of my mailchimp lists. 
+- [ ] As a user, I should be able to see all the members in each mailchimp list.
+- [ ] As a user, I should be able to remove stale email addresses from each mailchimp list.
+
+### batch job
+
+### non-core requirements
+- [ ] As a user, I can create and remove lists. 
+- [ ] As a user, I should be able to login and logout of the system using my email address. 
+
+
+Resources
 ---------
-Unlike our [official API wrapper](http://rubygems.org/gems/mailchimp-api) which is generated and thus non-conducive to pull requests, we'll be happy to consider them to:
-
-* update existing examples
-* add new basic functionality, especially for calls that you've found non-trivial
-* foster best practices for the language
-
-Just please remember this is intended as a beginner's demo, so please try to keep things organized and [K.I.S.S.](http://en.wikipedia.org/wiki/KISS_principle).
-
-Installation
-------------
-Generally, these steps should suffice to install and run the examples contained here.
-
-* Clone the repo or download the example code and put it ... somewhere.
-* run `bundle install` to have dependencies installed
-* edit `app/controllers/application_controller.rb`. Inside the single quotes, paste your [MailChimp API Key](http://kb.mailchimp.com/article/where-can-i-find-my-api-key) into `@mc = Mailchimp::API.new('00000000000000000000000000000000-us1')` replacing the placeholder API Key.
-* run `rails server`
-* point your web browser at http://0.0.0.0:3000/ and poke around
+Will be using a ruby wrapper for the mailchimp api
+Will use Rake to automate administrative tasks. Use Whenever gem to automate the rake tasks. 
