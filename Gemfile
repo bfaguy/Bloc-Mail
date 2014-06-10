@@ -32,3 +32,7 @@ group :doc do
   gem 'sdoc', require: false
 end
 
+# Use pry for debugging
+gem 'pry'
+gem 'pry-remote'
+gem 'pry-nav'
