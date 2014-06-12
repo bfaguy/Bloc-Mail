@@ -25,7 +25,7 @@ User Requirements
 - As a user, I should be able to prune a mailchimp list remove stale email addresses.
     - 'stale' email addresses are defined as those that have received the email campaign already
 - As a user, I should be able to edit email campaigns on mailchimp
-- As a user, I want to see when was the l
+- As a user, I want to see when the list was pruned and who pruned it.
 
 ### non-core requirements
 - As a user, I can create and remove lists. 
