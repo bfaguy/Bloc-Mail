@@ -3,6 +3,7 @@ BlocMail::Application.routes.draw do
   get "lists/index"
   get "lists/:id" => 'lists#view'
   post "lists/:id/subscribe" => 'lists#subscribe'
+  # resources :lists
 
   get "reports" => 'reports#index'
   get "reports/index"

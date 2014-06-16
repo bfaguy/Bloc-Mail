@@ -1,7 +1,16 @@
 require 'mailchimp'
 
-def setup_mc(id, name, email = 'admin@example.com')
+def setup_mc(name, id = '123', email = 'admin@example.com')
+  setup_mc_list id, name, email
+  setup_mc_list_members id
+end
 
+def setup_mc_list_members(list_id)
+  # member_data = {..}
+  # Mailchimp::Lists.stub(:members) { member_data }
+end
+
+def setup_mc_list(id, name, email)
   list_data = []
   list = {'id'=>id, 'name'=>name, 'stats'=> {'member_count' => 1},
           'date_created'=>'06/14/2014', 'list_rating'=>5}
@@ -13,11 +22,10 @@ def setup_mc(id, name, email = 'admin@example.com')
   members_data << member
   members = {'data' => members_data}
 
-  Mailchimp::Lists.stub(:unsubscribe) do |arg1, arg2, arg3|
+  # Mailchimp::Lists.stub(:unsubscribe) do |arg1, arg2, arg3|
+  # end
 
-  end
-
-  Mailchimp::Lists.stub(:new) { mock('lists', list: list, members: members) }
+  Mailchimp::Lists.stub(:new) { double('lists', list: list, members: members) }
   lists = Mailchimp::Lists.new
-  Mailchimp::API.stub(:new) { mock('MailChimp', lists: lists)}
+  Mailchimp::API.stub(:new) { double('MailChimp', lists: lists)}
 end

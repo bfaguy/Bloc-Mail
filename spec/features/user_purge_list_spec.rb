@@ -3,6 +3,7 @@ require 'spec_helper'
 feature "User purges list and removes old emails" do
 
   scenario "successfully" do
+    pending "will write controller specs first"
     list_id = '123'
     email_address = 'jon@bloc.com'
     setup_mc(list_id, "list", email_address)
