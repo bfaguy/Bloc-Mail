@@ -37,3 +37,6 @@ doc/
 unsub-users-log.txt
 
 tags
+
+# Ignore application configuration
+/config/application.yml
