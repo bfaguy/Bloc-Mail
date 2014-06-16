@@ -9,4 +9,4 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-BlocMail::Application.config.secret_key_base = 'ae10fe9874d1e5c3074256fcad6c24b6c73e648ac8f83ddc6b2a504087e59b2183b429332437ca60d15cfb207127e4b0de159021e01460136660a9eb6a5c29a4'
+BlocMail::Application.config.secret_key_base = ENV['MC_VERIFY_COOKIES_KEY']
