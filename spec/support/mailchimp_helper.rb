@@ -13,6 +13,10 @@ def setup_mc(id, name, email = 'admin@example.com')
   members_data << member
   members = {'data' => members_data}
 
+  Mailchimp::Lists.stub(:unsubscribe) do |arg1, arg2, arg3|
+
+  end
+
   Mailchimp::Lists.stub(:new) { mock('lists', list: list, members: members) }
   lists = Mailchimp::Lists.new
   Mailchimp::API.stub(:new) { mock('MailChimp', lists: lists)}

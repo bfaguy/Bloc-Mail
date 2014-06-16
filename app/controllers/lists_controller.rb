@@ -59,13 +59,12 @@ class ListsController < ApplicationController
     number_unsubscribed = 0
     begin
       members.each do |member|
-        binding.pry
         member_date = Date.parse(member['timestamp'])
         days_old = Date.today - member_date
         if days_old > BlocMail::Application::DAYS_OLD_THRESHOLD
-          # @mc.lists.unsubscribe(params[:id], {'email' => @email_unsub}, :delete_member => false,
-#                                :send_goodbye => false, 
-#                                :send_notify => false)
+          @mc.lists.unsubscribe(params[:id], {'email' => member['email']}, :delete_member => false,
+                                :send_goodbye => false, 
+                                :send_notify => false)
           number_unsubscribed += 1
         end
       end
