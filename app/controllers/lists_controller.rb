@@ -34,6 +34,45 @@ class ListsController < ApplicationController
     end
   end
 
+  def purge
+    list_id = params[:id]
+    begin
+      members_res = @mc.lists.members( list_id, "subscribed", :limit => 100)
+      members = members_res['data']
+      number_unsubscribed = cleanupSegment(members)
+      flash[:success] = "succesfully unsubscribed #{number_unsubscribed} email(s)"
+    rescue Mailchimp::ListDoesNotExistError
+      flash[:error] = "The list could not be found"
+      redirect_to "/lists/"
+      return
+    rescue Mailchimp::Error => ex
+      if ex.message
+        flash[:error] = ex.message
+      else
+        flash[:error] = "An unknown error occurred"
+      end
+    end
+    redirect_to "/lists/#{list_id}"
+  end
+
+  def cleanupSegment(members)
+    number_unsubscribed = 0
+    begin
+      members.each do |member|
+        binding.pry
+        member_date = Date.parse(member['timestamp'])
+        days_old = Date.today - member_date
+        if days_old > BlocMail::Application::DAYS_OLD_THRESHOLD
+          # @mc.lists.unsubscribe(params[:id], {'email' => @email_unsub}, :delete_member => false,
+#                                :send_goodbye => false, 
+#                                :send_notify => false)
+          number_unsubscribed += 1
+        end
+      end
+    end
+    number_unsubscribed
+  end
+
   def subscribe
     list_id = params[:id]
     email = params['email']
