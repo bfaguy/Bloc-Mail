@@ -10,7 +10,7 @@ describe ListsController do
 
     it "removes any old emails address from the list succesfully" do
       setup_mc(list_name, list_id, member_email)
-      expect{ post :purge }.to change{ List.count }.by 1
+      expect{ post :purge }.to change{ Members.count }.by 1
       # expect(response.body).to include "List was not created"
       # expect(assigns(:list).errors.messages.to_s).to include "List name already exists"
     end
