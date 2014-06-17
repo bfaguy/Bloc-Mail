@@ -23,12 +23,17 @@
   </tr>
   <% @members.each do |member_json| %>
     <% member = JSON.parse(member_json) %>
-    <tr><%# binding.pry %>
-    <td><%= member[1]+' '+member[2] %></td>
-    <td><%= member[0] %></td>
-    <td><%= member[6] %></td>
-    <td><%= member[3] %></td>
-  </tr>
-<% end %>
+    <tr>
+      <td><%= member[1]+' '+member[2] %></td>
+      <td><%= member[0] %></td>
+      <td><%= member[6] %></td>
+      <td><%= member[3] %></td>
+    </tr>
+  <% end %>
 </table>
-
+<h3>
+  <center>
+    <%= will_paginate @members %>
+  </center>
+</h3>
+<br/><br/><br/><br/>

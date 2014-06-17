@@ -1,5 +1,15 @@
 require 'mailchimp'
 
+def setup_mc_with_fake_email(email)
+  Gibbon::Export.stub(:list) { 
+    original = Gibbon::Export.list() 
+    header = original.shift
+    original.unshift("[\"#{email},\"Joshua\",\"Tree\",2,\"\",null,\"2014-06-17 00:19:17\",\"70.165.46.157\",null,null,null,null,null,null,null,\"2014-06-17 00:19:17\",\"348602965\",\"625d4b0e09\"]\n")
+    original.unshift(header)
+    original
+  }
+end
+
 def setup_mc(name, id = '123', email = 'admin@example.com')
   setup_mc_list id, name, email
   setup_mc_list_members id

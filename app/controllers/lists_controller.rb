@@ -17,14 +17,13 @@ class ListsController < ApplicationController
   def show
     list_id = params[:id]
     begin
+
       lists_res = @mc.lists.list({'list_id' => list_id})
       @list = lists_res['data'][0]
-    #  opts = {'limit'=>100, 'sort_field'=>"last_update_time"}
-    #  members_res = @mc.lists.members(list_id, 'subscribed', opts)
-    #  @members = members_res['data']
-      # @members = @gibbon_export.list({:id => list_id, :since => '2014-06-17 00:19:19'})
       @members = @gibbon_export.list({:id => list_id})
       @members.shift
+      @members = @members.paginate(page: params[:page], per_page:25)
+
     rescue Mailchimp::ListDoesNotExistError
       flash[:error] = "The list could not be found"
       redirect_to "/lists/"
