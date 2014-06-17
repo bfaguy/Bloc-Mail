@@ -27,6 +27,9 @@ gem 'jbuilder', '~> 1.2'
 # Handle sensitive data with environment variables
 gem 'figaro'
 
+# API wrapper for MailChimp API
+gem 'gibbon'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -37,6 +40,8 @@ group :development, :test do
   gem 'pry'
   gem 'pry-nav'
   gem 'pry-remote'
+  gem 'pry-rescue'
+  gem 'pry-stack_explorer'
   gem 'launchy'
 end
 
