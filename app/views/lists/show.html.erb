@@ -16,15 +16,18 @@
 <h3>Members</h3>
 <table class="table table-bordered">
   <tr>
+    <th>Name</th>
     <th>Email</th>
     <th>Subscribed Since</th>
     <th>Member Rating</th>
   </tr>
-  <% @members.each do |member| %>
-    <tr>
-    <td><%= member['email'] %></td>
-    <td><%= member['timestamp'] %></td>
-    <td><%= member['member_rating'] %></td>
+  <% @members.each do |member_json| %>
+    <% member = JSON.parse(member_json) %>
+    <tr><%# binding.pry %>
+    <td><%= member[1]+' '+member[2] %></td>
+    <td><%= member[0] %></td>
+    <td><%= member[6] %></td>
+    <td><%= member[3] %></td>
   </tr>
 <% end %>
 </table>

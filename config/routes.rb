@@ -1,15 +1,14 @@
 BlocMail::Application.routes.draw do
-  get "lists" => 'lists#index'
-  get "lists/index"
-  get "lists/:id" => 'lists#view'
+
+  resources :lists, only: [:index, :show]
+  
   post "lists/:id/subscribe" => 'lists#subscribe'
-  # resources :lists
+  post "lists/:id/purge" => 'lists#purge'
 
   get "reports" => 'reports#index'
   get "reports/index"
   get "reports/:id" => 'reports#view'
 
-  post "lists/:id/purge" => 'lists#purge'
 
   root "pages#home"
   # The priority is based upon order of creation: first created -> highest priority.

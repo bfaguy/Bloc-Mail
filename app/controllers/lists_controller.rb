@@ -14,13 +14,17 @@ class ListsController < ApplicationController
     end
   end
 
-  def view
+  def show
     list_id = params[:id]
     begin
       lists_res = @mc.lists.list({'list_id' => list_id})
       @list = lists_res['data'][0]
-      members_res = @mc.lists.members(list_id)
-      @members = members_res['data']
+    #  opts = {'limit'=>100, 'sort_field'=>"last_update_time"}
+    #  members_res = @mc.lists.members(list_id, 'subscribed', opts)
+    #  @members = members_res['data']
+      # @members = @gibbon_export.list({:id => list_id, :since => '2014-06-17 00:19:19'})
+      @members = @gibbon_export.list({:id => list_id})
+      @members.shift
     rescue Mailchimp::ListDoesNotExistError
       flash[:error] = "The list could not be found"
       redirect_to "/lists/"
@@ -37,10 +41,15 @@ class ListsController < ApplicationController
   def purge
     list_id = params[:id]
     begin
-      members_res = @mc.lists.members( list_id, "subscribed", :limit => 100)
-      members = members_res['data']
-      number_unsubscribed = cleanupSegment(members)
-      flash[:success] = "succesfully unsubscribed #{number_unsubscribed} email(s)"
+      members = @gibbon_export.list({:id => list_id})
+      members.shift
+      number_unsubscribed = cleanup_segment(members)
+      if (number_unsubscribed > 0)
+        flash[:success] = "succesfully unsubscribed #{number_unsubscribed} member(s)"
+      else
+        flash[:notice] = "no members unsubscribed"
+      end
+
     rescue Mailchimp::ListDoesNotExistError
       flash[:error] = "The list could not be found"
       redirect_to "/lists/"
@@ -57,17 +66,21 @@ class ListsController < ApplicationController
 
   private 
 
-  def cleanupSegment(members)
+  def cleanup_segment(members)
     number_unsubscribed = 0
     begin
-      members.each do |member|
-        member_date = Date.parse(member['timestamp'])
-        days_old = Date.today - member_date
+      members.each do |member_json|
+        member = JSON.parse(member_json)
+        member_date = Date.parse(member[6])
+        days_old = (Date.today+10) - member_date
         if days_old > BlocMail::Application::DAYS_OLD_THRESHOLD
-          @mc.lists.unsubscribe(params[:id], {'email' => member['email']}, :delete_member => false,
-                                :send_goodbye => false, 
-                                :send_notify => false)
-          number_unsubscribed += 1
+          return_value = @mc.lists.unsubscribe(params[:id], 
+                                               {'email' => member[0]}, :delete_member => false,
+                                               :send_goodbye => false, 
+                                               :send_notify => false)
+          if (return_value['complete'])
+            number_unsubscribed += 1
+          end
         end
       end
     end
