@@ -47,7 +47,6 @@ class ListsController < ApplicationController
       members = @gibbon_export.list({:id => list_id})
       members.shift
       cleanup_result  = cleanup_segment(members, @mc, list_id, current_user.id)
-      binding.pry
       if (cleanup_result[:error_message])
         flash[:error] = cleanup_result[:error_message]
       elsif (cleanup_result[:number_unsubscribed] > 0)
