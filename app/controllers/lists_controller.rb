@@ -1,4 +1,9 @@
+#require Rails.root.join('lib/list_util.rb')
+require 'list_util'
+
 class ListsController < ApplicationController
+
+  include ListUtil
 
   def index
     begin
@@ -41,7 +46,7 @@ class ListsController < ApplicationController
     begin
       members = @gibbon_export.list({:id => list_id})
       members.shift
-      number_unsubscribed = cleanup_segment(members)
+      number_unsubscribed = cleanup_segment(members, @mc)
       if (number_unsubscribed > 0)
         flash[:success] = "succesfully unsubscribed #{number_unsubscribed} member(s)"
       else
@@ -60,29 +65,6 @@ class ListsController < ApplicationController
       end
     end
     redirect_to "/lists/#{list_id}"
-  end
-
-  private 
-
-  def cleanup_segment(members)
-    number_unsubscribed = 0
-    begin
-      members.each do |member_json|
-        member = JSON.parse(member_json)
-        member_date = Date.parse(member[6])
-        days_old = (Date.today+10) - member_date
-        if days_old > BlocMail::Application::DAYS_OLD_THRESHOLD
-          return_value = @mc.lists.unsubscribe(params[:id], 
-                                               {'email' => member[0]}, :delete_member => false,
-                                               :send_goodbye => false, 
-                                               :send_notify => false)
-          if (return_value['complete'])
-            number_unsubscribed += 1
-          end
-        end
-      end
-    end
-    number_unsubscribed
   end
 
 end

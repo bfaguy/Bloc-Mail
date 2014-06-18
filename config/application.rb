@@ -10,5 +10,6 @@ module BlocMail
   class Application < Rails::Application
     # emails are 'old' / 'stale' after this number of days
     DAYS_OLD_THRESHOLD = 7 
+    config.autoload_paths += %W(#{config.root}/lib)
   end
 end
