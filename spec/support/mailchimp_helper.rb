@@ -1,13 +1,14 @@
 require 'mailchimp'
 
-def setup_mc_with_fake_email(email)
-  Gibbon::Export.stub(:list) { 
-    original = Gibbon::Export.list() 
-    header = original.shift
-    original.unshift("[\"#{email},\"Joshua\",\"Tree\",2,\"\",null,\"2014-06-17 00:19:17\",\"70.165.46.157\",null,null,null,null,null,null,null,\"2014-06-17 00:19:17\",\"348602965\",\"625d4b0e09\"]\n")
-    original.unshift(header)
-    original
-  }
+def setup_mc_to_test_pagination(email, list_id)
+  gibbon = Gibbon::Export.new(ENV['MAILCHIMP_API_KEY'])
+  original = gibbon.list({:id => list_id})
+  header = original.shift
+  original.unshift("[\"#{email}\",\"Joshua\",\"Tree\",2,\"\",null,\"2014-06-17 00:19:17\","+
+                   "\"70.165.46.157\",null,null,null,null,null,null,null,\"2014-06-17 00:19:17\","+
+                   "\"348602965\",\"625d4b0e09\"]\n")
+  original.unshift(header)
+  Gibbon::Export.stub(:new) { double("list", list: original) }
 end
 
 def setup_mc(name, id = '123', email = 'admin@example.com')
