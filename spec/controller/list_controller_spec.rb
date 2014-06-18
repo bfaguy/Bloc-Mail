@@ -9,6 +9,7 @@ describe ListsController do
   describe "#purge" do
 
     it "removes any old emails address from the list succesfully" do
+      pending
       setup_mc(list_name, list_id, member_email)
       expect{ post :purge }.to change{ Members.count }.by 1
       # expect(response.body).to include "List was not created"
