@@ -46,11 +46,14 @@ class ListsController < ApplicationController
     begin
       members = @gibbon_export.list({:id => list_id})
       members.shift
-      number_unsubscribed = cleanup_segment(members, @mc)
-      if (number_unsubscribed > 0)
-        flash[:success] = "succesfully unsubscribed #{number_unsubscribed} member(s)"
+      cleanup_result  = cleanup_segment(members, @mc, list_id, current_user.id)
+      binding.pry
+      if (cleanup_result[:error_message])
+        flash[:error] = cleanup_result[:error_message]
+      elsif (cleanup_result[:number_unsubscribed] > 0)
+        flash[:success] = "Succesfully unsubscribed #{number_unsubscribed} member(s)"
       else
-        flash[:notice] = "no members unsubscribed"
+        flash[:notice] = "No members unsubscribed"
       end
 
     rescue Mailchimp::ListDoesNotExistError

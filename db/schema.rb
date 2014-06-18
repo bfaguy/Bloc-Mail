@@ -11,13 +11,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140618205248) do
+ActiveRecord::Schema.define(version: 20140618223432) do
 
   create_table "purges", force: true do |t|
-    t.integer  "list_id"
+    t.string   "list_id"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "unsubscribed_count"
   end
 
   add_index "purges", ["user_id"], name: "index_purges_on_user_id"
