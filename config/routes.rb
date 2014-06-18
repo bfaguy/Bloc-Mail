@@ -1,12 +1,14 @@
-McapiRubyExample::Application.routes.draw do
-  get "lists" => 'lists#index'
-  get "lists/index"
-  get "lists/:id" => 'lists#view'
+BlocMail::Application.routes.draw do
+
+  resources :lists, only: [:index, :show]
+  
   post "lists/:id/subscribe" => 'lists#subscribe'
+  post "lists/:id/purge" => 'lists#purge'
 
   get "reports" => 'reports#index'
   get "reports/index"
   get "reports/:id" => 'reports#view'
+
 
   root "pages#home"
   # The priority is based upon order of creation: first created -> highest priority.

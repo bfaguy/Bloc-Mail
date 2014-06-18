@@ -1,0 +1,39 @@
+<% content_for :title, @list['name'] %>
+<h2><%= @list['name'] %></h2>
+
+<h3>Add a New Member</h3>
+<p>You will not see the member listed until they click the link in the confirmation email.</p>
+<form action="/lists/<%= @list['id'] %>/subscribe/" method="post" class="form-inline">
+  <input type="hidden" name="list_id" value="<%= @list['id'] %>"/>
+  <input type="email" name="email" placeholder="email address"/>
+  <input type="submit" class="btn" value="Add Member"/>
+</form>
+
+<form action="/lists/<%= @list['id'] %>/purge/" method="post" class="form-inline">
+  <input type="submit" class="btn" value="Purge List" />
+</form>
+
+<h3>Members</h3>
+<table class="table table-bordered">
+  <tr>
+    <th>Name</th>
+    <th>Email</th>
+    <th>Subscribed Since</th>
+    <th>Member Rating</th>
+  </tr>
+  <% @members.each do |member_json| %>
+    <% member = JSON.parse(member_json) %>
+    <tr>
+      <td><%= member[1]+' '+member[2] %></td>
+      <td><%= member[0] %></td>
+      <td><%= member[6] %></td>
+      <td><%= member[3] %></td>
+    </tr>
+  <% end %>
+</table>
+<h3>
+  <center>
+    <%= will_paginate @members %>
+  </center>
+</h3>
+<br/><br/><br/><br/>
