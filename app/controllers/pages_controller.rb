@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-  def home
+  def index 
     begin
       res = @mc.helper.ping
     rescue Mailchimp::InvalidApiKeyError => ex
