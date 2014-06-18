@@ -1,6 +1,28 @@
 require 'mailchimp'
 
-def setup_mc_to_test_pagination(email, list_id)
+def setup_mc(list_name, list_id = '123', email = 'admin@example.com')
+  setup_mc_list(list_name, list_id, email)
+  setup_gibbon_list(email)
+end
+
+def setup_mc_list(list_name, list_id, email)
+  list_data = []
+  list = {'id'=>list_id, 'name'=>list_name, 'stats'=> {'member_count' => 1},
+          'date_created'=>'06/14/2014', 'list_rating'=>5}
+  list_data << list
+  list = {'data' => list_data}
+
+  members_data = []
+  member = {'email' => email, 'timestamp'=>'01/01/2001'}
+  members_data << member
+  members = {'data' => members_data}
+
+  Mailchimp::Lists.stub(:new) { double('lists', list: list, members: members) }
+  lists = Mailchimp::Lists.new
+  Mailchimp::API.stub(:new) { double('MailChimp', lists: lists)}
+end
+
+def setup_gibbon_list(email, list_id = '669c2edd5f')
   gibbon = Gibbon::Export.new(ENV['MAILCHIMP_API_KEY'])
   original = gibbon.list({:id => list_id})
   header = original.shift
@@ -11,32 +33,3 @@ def setup_mc_to_test_pagination(email, list_id)
   Gibbon::Export.stub(:new) { double("list", list: original) }
 end
 
-def setup_mc(name, id = '123', email = 'admin@example.com')
-  setup_mc_list id, name, email
-  setup_mc_list_members id
-end
-
-def setup_mc_list_members(list_id)
-  # member_data = {..}
-  # Mailchimp::Lists.stub(:members) { member_data }
-end
-
-def setup_mc_list(id, name, email)
-  list_data = []
-  list = {'id'=>id, 'name'=>name, 'stats'=> {'member_count' => 1},
-          'date_created'=>'06/14/2014', 'list_rating'=>5}
-  list_data << list
-  list = {'data' => list_data}
-
-  members_data = []
-  member = {'email' => email, 'timestamp'=>'01/01/2001'}
-  members_data << member
-  members = {'data' => members_data}
-
-  # Mailchimp::Lists.stub(:unsubscribe) do |arg1, arg2, arg3|
-  # end
-
-  Mailchimp::Lists.stub(:new) { double('lists', list: list, members: members) }
-  lists = Mailchimp::Lists.new
-  Mailchimp::API.stub(:new) { double('MailChimp', lists: lists)}
-end

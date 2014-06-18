@@ -6,7 +6,7 @@ feature "User can scroll through paginated members on list view" do
   scenario "succesfully" do
     list_id = '669c2edd5f' # list on testing mailchimp account
     email = "admin@example.com"
-    setup_mc_to_test_pagination(email, list_id)
+    setup_gibbon_list(email, list_id)
 
     visit "/lists/#{list_id}"
     expect(page).to have_content("Previous")
