@@ -17,7 +17,6 @@ class ListsController < ApplicationController
   def show
     list_id = params[:id]
     begin
-
       lists_res = @mc.lists.list({'list_id' => list_id})
       @list = lists_res['data'][0]
       @members = @gibbon_export.list({:id => list_id})
