@@ -14,7 +14,7 @@ module ListUtil
                                                :send_notify => false)
           if (return_value['complete'])
             number_unsubscribed += 1
-            Rails.logger.info "just cleaned up semgnet"
+            Rails.logger.info "unsubscribed member: #{member[0]}"
           end
         end
       end
