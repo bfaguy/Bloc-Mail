@@ -52,13 +52,13 @@ class ListsController < ApplicationController
       end
 
       cleanup_result  = cleanup_segment(members, @mc, list_id, current_user.id)
-
       if (cleanup_result[:error_message])
         flash[:error] = cleanup_result[:error_message]
       elsif (cleanup_result[:number_unsubscribed] > 0)
-        flash[:success] = "Succesfully unsubscribed #{cleanup_result[:number_unsubscribed]} member(s)"
+        flash[:notice] = "Succesfully unsubscribed #{cleanup_result[:number_unsubscribed]} "+
+          "member".pluralize(cleanup_result[:number_unsubscribed])
       else
-        flash[:notice] = "No members unsubscribed"
+        flash[:alert] = "No members unsubscribed"
       end
 
     rescue Mailchimp::ListDoesNotExistError

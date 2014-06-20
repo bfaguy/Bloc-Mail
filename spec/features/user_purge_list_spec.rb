@@ -6,13 +6,14 @@ feature "User purges list and removes old emails" do
 
   scenario "successfully" do
     email_address = 'jon@bloc.com'
-    setup_gibbon_list(email_address, 2)
+
+    setup_mc_mocks("new list", '123', email_address)
+
     login(user)
     visit "/lists/123" # doesn't matter what list id is
     expect(page).to have_content(email_address)
-    save_and_open_page
     click_button 'Purge List'
-    expect(page).to have_content("succesfully unsubscribed 1 email(s)")
+    expect(page).to have_content("Succesfully unsubscribed 1 member")
     expect(page).to_not have_content(email_address)
   end
 

@@ -1,12 +1,12 @@
 require 'mailchimp'
 require 'faker'
 
-def setup_mc(list_name, list_id = '123', email = 'admin@example.com')
-  setup_mc_list(list_name, list_id, email)
-  setup_gibbon_list(email, 1)
+def setup_mc_mocks(list_name, list_id = '123', email = 'admin@example.com')
+  mock_mc(list_name, list_id, email)
+  mock_gibbon_list(1, email)
 end
 
-def setup_mc_list(list_name, list_id, email)
+def mock_mc(list_name, list_id, email = 'admin@example.com')
 
   list_data = []
   list = {'id'=>list_id, 'name'=>list_name, 'stats'=> {'member_count' => 1},
@@ -29,7 +29,7 @@ def setup_mc_list(list_name, list_id, email)
 end
 
 
-def setup_gibbon_list(email, num_members)
+def mock_gibbon_list(num_members, email = 'admin@example.com')
 
   list_data = ["[\"Email Address\",\"First Name\",\"Last Name\",\"MEMBER_RATING\",\"OPTIN_TIME\",\"OPTIN_IP\",\"CONFIRM_TIME\",\"CONFIRM_IP\",\"LATITUDE\",\"LONGITUDE\",\"GMTOFF\",\"DSTOFF\",\"TIMEZONE\",\"CC\",\"REGION\",\"LAST_CHANGED\",\"LEID\",\"EUID\"]\n"]
 

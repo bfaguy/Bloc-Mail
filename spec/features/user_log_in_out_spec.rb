@@ -18,7 +18,7 @@ feature 'User visits BlocMail' do
   scenario 'with invalid password' do
     visit new_user_session_path
     fill_in 'Email', with: user.email 
-    fill_in 'Password', with: 'fjalkj2353'
+    fill_in 'Password', with: 'invalid-password'
     click_button 'Sign in'
     expect(page).to have_content('Invalid email or password.')
   end
