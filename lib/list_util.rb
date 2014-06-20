@@ -8,10 +8,10 @@ module ListUtil
         member_date = Date.parse(member[6])
         days_old = (Date.today) - member_date
         if days_old > BlocMail::Application::DAYS_OLD_THRESHOLD
-          return_value = mc.lists.unsubscribe(params[:id], 
-                                               {'email' => member[0]}, :delete_member => false,
-                                               :send_goodbye => false, 
-                                               :send_notify => false)
+          return_value = mc.lists.unsubscribe(list_id, 
+                                              {'email' => member[0]}, :delete_member => false,
+                                              :send_goodbye => false, 
+                                              :send_notify => false)
           if (return_value['complete'])
             number_unsubscribed += 1
             Rails.logger.info "unsubscribed member: #{member[0]}"

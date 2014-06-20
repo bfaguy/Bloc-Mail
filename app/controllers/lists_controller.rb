@@ -24,6 +24,7 @@ class ListsController < ApplicationController
     begin
       lists_res = @mc.lists.list({'list_id' => list_id})
       @list = lists_res['data'][0]
+
       @members = @gibbon_export.list({:id => list_id})
       @members.shift
       @members = @members.paginate(page: params[:page], per_page:25)
@@ -45,8 +46,13 @@ class ListsController < ApplicationController
     list_id = params[:id]
     begin
       members = @gibbon_export.list({:id => list_id})
-      members.shift
+
+      if members[0].include? "Email Address"
+        members.shift
+      end
+
       cleanup_result  = cleanup_segment(members, @mc, list_id, current_user.id)
+
       if (cleanup_result[:error_message])
         flash[:error] = cleanup_result[:error_message]
       elsif (cleanup_result[:number_unsubscribed] > 0)
