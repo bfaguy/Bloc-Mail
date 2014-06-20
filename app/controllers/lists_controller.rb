@@ -56,7 +56,7 @@ class ListsController < ApplicationController
       if (cleanup_result[:error_message])
         flash[:error] = cleanup_result[:error_message]
       elsif (cleanup_result[:number_unsubscribed] > 0)
-        flash[:success] = "Succesfully unsubscribed #{number_unsubscribed} member(s)"
+        flash[:success] = "Succesfully unsubscribed #{cleanup_result[:number_unsubscribed]} member(s)"
       else
         flash[:notice] = "No members unsubscribed"
       end
