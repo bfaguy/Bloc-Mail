@@ -2,10 +2,9 @@ require 'spec_helper'
 
 feature "User can scroll through paginated members on list view" do
 
-  # note: this test requires the rails server to be running 
   scenario "succesfully" do
     email = "admin@example.com"
-    setup_gibbon_list(email, 30)
+    mock_gibbon_list(30, email)
 
     visit "/lists/123"
     expect(page).to have_content(email)
