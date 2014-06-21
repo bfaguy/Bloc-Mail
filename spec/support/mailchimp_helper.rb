@@ -1,8 +1,9 @@
 require 'mailchimp'
+require 'faker'
 
 def setup_mc(list_name, list_id = '123', email = 'admin@example.com')
   setup_mc_list(list_name, list_id, email)
-  setup_gibbon_list(email)
+  setup_gibbon_list(email, 1)
 end
 
 def setup_mc_list(list_name, list_id, email)
@@ -22,14 +23,22 @@ def setup_mc_list(list_name, list_id, email)
   Mailchimp::API.stub(:new) { double('MailChimp', lists: lists)}
 end
 
-def setup_gibbon_list(email, list_id = '669c2edd5f')
-  gibbon = Gibbon::Export.new(ENV['MAILCHIMP_API_KEY'])
-  original = gibbon.list({:id => list_id})
-  header = original.shift
-  original.unshift("[\"#{email}\",\"Joshua\",\"Tree\",2,\"\",null,\"2014-06-17 00:19:17\","+
-                   "\"70.165.46.157\",null,null,null,null,null,null,null,\"2014-06-17 00:19:17\","+
-                   "\"348602965\",\"625d4b0e09\"]\n")
-  original.unshift(header)
-  Gibbon::Export.stub(:new) { double("list", list: original) }
+def setup_gibbon_list(email, num_members)
+
+  list_data = ["header"]
+
+  member_data = "[\"#{email}\",\"Joshua\",\"Tree\",2,\"\",null,\"2014-06-17 00:19:17\","+
+    "\"70.165.46.157\",null,null,null,null,null,null,null,\"2014-06-17 00:19:17\","+
+    "\"348602965\",\"625d4b0e09\"]\n"
+  list_data << member_data
+
+  num_members.times do
+    member_data = "[\"#{Faker::Internet.email}\",\"Joshua\",\"Tree\",2,\"\",null,\"2014-06-17 00:19:17\","+
+      "\"70.165.46.157\",null,null,null,null,null,null,null,\"2014-06-17 00:19:17\","+
+      "\"348602965\",\"625d4b0e09\"]\n"
+    list_data << member_data
+  end
+
+  Gibbon::Export.stub(:new) { double("list", list: list_data) }
 end
 

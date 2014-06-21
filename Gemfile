@@ -33,6 +33,9 @@ gem 'gibbon'
 # Pagination
 gem 'will_paginate', '~> 3.0.5'
 
+# User authentication
+gem 'devise'
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
@@ -53,8 +56,7 @@ group :test do
   gem 'rspec-rails'  
   gem 'capybara'
   gem 'rspec'
-  gem 'vcr'
-  gem 'fakeweb'
+  gem 'faker'
 end
 
 group :production do
