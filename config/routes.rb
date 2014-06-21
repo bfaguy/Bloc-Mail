@@ -1,6 +1,8 @@
 BlocMail::Application.routes.draw do
   devise_for :users
   resources :lists, only: [:index, :show]
+
+  resources :purges
   
   post "lists/:id/subscribe" => 'lists#subscribe'
   post "lists/:id/purge" => 'lists#purge'

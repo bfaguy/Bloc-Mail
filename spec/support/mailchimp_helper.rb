@@ -8,30 +8,24 @@ end
 
 def mock_mc(list_name, list_id, email = 'admin@example.com')
 
-  list_data = []
-  list = {'id'=>list_id, 'name'=>list_name, 'stats'=> {'member_count' => 1},
-          'date_created'=>'06/14/2014', 'list_rating'=>5}
-  list_data << list
+  list_data = [{'id'=>list_id, 'name'=>list_name, 'stats'=> {'member_count' => 1},
+          'date_created'=>'06/14/2014', 'list_rating'=>5}]
   list = {'data' => list_data}
-
-  members_data = []
-  member = {'email' => email, 'timestamp'=>'01/01/2001'}
-  members_data << member
-  members = {'data' => members_data}
 
   unsubscribe_result = {'complete'=> true}
 
-  lists_double = double('lists', list: list, members: members, unsubscribe: unsubscribe_result)
+  lists_double = double('lists', list: list, unsubscribe: unsubscribe_result)
   mc_double = double('MailChimp', lists: lists_double)
   Mailchimp::API.stub(:new) { mc_double }
 
   return mc_double
 end
 
-
 def mock_gibbon_list(num_members, email = 'admin@example.com')
 
-  list_data = ["[\"Email Address\",\"First Name\",\"Last Name\",\"MEMBER_RATING\",\"OPTIN_TIME\",\"OPTIN_IP\",\"CONFIRM_TIME\",\"CONFIRM_IP\",\"LATITUDE\",\"LONGITUDE\",\"GMTOFF\",\"DSTOFF\",\"TIMEZONE\",\"CC\",\"REGION\",\"LAST_CHANGED\",\"LEID\",\"EUID\"]\n"]
+  list_data = ["[\"Email Address\",\"First Name\",\"Last Name\",\"MEMBER_RATING\",\"OPTIN_TIME\","+
+               "\"OPTIN_IP\",\"CONFIRM_TIME\",\"CONFIRM_IP\",\"LATITUDE\",\"LONGITUDE\",\"GMTOFF\","+
+               "\"DSTOFF\",\"TIMEZONE\",\"CC\",\"REGION\",\"LAST_CHANGED\",\"LEID\",\"EUID\"]\n"]
 
   member_data = "[\"#{email}\",\"Joshua\",\"Tree\",2,\"\",null,\"2013-06-17 00:19:17\","+
     "\"70.165.46.157\",null,null,null,null,null,null,null,\"2014-06-17 00:19:17\","+
