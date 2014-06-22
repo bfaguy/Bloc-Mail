@@ -1,9 +1,9 @@
 require 'mailchimp'
 require 'faker'
 
-def setup_mc_mocks(list_name, list_id = '123', email = 'admin@example.com')
+def setup_mc_mocks(list_name, list_id = '123', email = 'admin@example.com', num_members = 1)
   mock_mc(list_name, list_id, email)
-  mock_gibbon_list(1, email)
+  mock_gibbon_list(num_members, email)
 end
 
 def mock_mc(list_name, list_id, email = 'admin@example.com')
