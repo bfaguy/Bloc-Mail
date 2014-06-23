@@ -17,6 +17,8 @@ feature 'User can view logs of purges' do
     visit purges_path 
     expect(page).to have_content("List Id")
     expect(page).to have_content(purge.list_id)
+    expect(page).to have_content("Name (email)")
+    expect(page).to have_content(user.name)
 
   end
 

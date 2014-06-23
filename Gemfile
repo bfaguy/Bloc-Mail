@@ -58,6 +58,7 @@ group :test do
   gem 'rspec'
   gem 'faker'
   gem 'webmock'
+  gem 'shoulda'
 end
 
 group :production do

@@ -4,7 +4,7 @@
 <table class="table table-bordered">
     <tr>
         <th>List Id</th>
-        <th>User Id</th>
+        <th>Name (email)</th>
         <th>Time Purged</th>
         <th>Number Unsubscribed</th>
     </tr>
@@ -12,7 +12,8 @@
     <% @purges.each do |purge| %>
     <tr>
       <td><%= purge.list_id %></td>
-      <td><%= purge.user_id %></td>
+      <% user = User.find(purge.user.id) %>
+      <td><%= user.name+" ("+user.email+")" %></td>
       <td><%= purge.created_at %></td>
       <td><%= purge.unsubscribed_count %></td>
     </tr>
