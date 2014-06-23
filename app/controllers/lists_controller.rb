@@ -1,6 +1,3 @@
-#require Rails.root.join('lib/list_util.rb')
-require 'list_util'
-
 class ListsController < ApplicationController
 
   include ListUtil
@@ -42,8 +39,31 @@ class ListsController < ApplicationController
     end
   end
 
+  def subscribe
+    list_id = params[:id]
+    email = params['email']
+    begin
+      @mc.lists.subscribe(params[:id], {'email' => email})
+      flash[:success] = "#{email} subscribed successfully"
+    rescue Mailchimp::ListAlreadySubscribedError
+      flash[:error] = "#{email} is already subscribed to the list"
+    rescue Mailchimp::ListDoesNotExistError
+      flash[:error] = "The list could not be found"
+      redirect_to "/lists/"
+      return
+    rescue Mailchimp::Error => ex
+      if ex.message
+        flash[:error] = ex.message
+      else
+        flash[:error] = "An unknown error occurred"
+      end
+    end
+    redirect_to "/lists/#{list_id}"
+  end
+
   def purge
     list_id = params[:id]
+    days_old_threshold = params[:days_old].to_i
     begin
       members = @gibbon_export.list({:id => list_id})
 
@@ -51,7 +71,8 @@ class ListsController < ApplicationController
         members.shift
       end
 
-      cleanup_result  = cleanup_segment(members, @mc, list_id, current_user.id)
+      cleanup_result  = cleanup_segment(members, @mc, list_id, current_user.id, days_old_threshold)
+
       if (cleanup_result[:error_message])
         flash[:error] = cleanup_result[:error_message]
       elsif (cleanup_result[:number_unsubscribed] > 0)
