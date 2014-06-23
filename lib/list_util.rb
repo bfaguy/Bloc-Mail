@@ -4,15 +4,13 @@ module ListUtil
 
     email_batch = []
 
-    begin
-      members.each do |member_json|
-        member = JSON.parse(member_json)
-        member_date = Date.parse(member[6])
-        days_old = (Date.today) - member_date
-        if days_old >= days_old_threshold 
-          email_batch << {email: member[0]}
-          Rails.logger.info "unsubscribed member: #{member[0]}"
-        end
+    members.each do |member_json|
+      member = JSON.parse(member_json)
+      member_date = Date.parse(member[6])
+      days_old = (Date.today) - member_date
+      if days_old >= days_old_threshold 
+        email_batch << {email: member[0]}
+        Rails.logger.info "unsubscribed member: #{member[0]}"
       end
     end
 
@@ -26,7 +24,7 @@ module ListUtil
       purge_log.unsubscribed_count = number_unsubscribed
 
       unless purge_log.save
-        # error_message = "Purge could not be saved"
+        flash[:error] = "Purge could not be saved"
       end
     end
 

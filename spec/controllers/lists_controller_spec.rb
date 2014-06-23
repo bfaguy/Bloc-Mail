@@ -14,7 +14,8 @@ describe ListsController do
       double_mc = mock_mc("new list", list_id)
       mock_gibbon_list(3)
 
-      expect(double_mc.lists).to receive(:unsubscribe).once
+      expect(double_mc.lists).to receive(:batch_unsubscribe).once
+      expect(Rails.logger).to receive(:info).exactly(1).times
       post :purge, :id => list_id
     end
 
