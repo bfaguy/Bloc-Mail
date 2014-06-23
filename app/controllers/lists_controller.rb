@@ -71,13 +71,18 @@ class ListsController < ApplicationController
         members.shift
       end
 
-      cleanup_result  = cleanup_segment(members, @mc, list_id, current_user.id, days_old_threshold)
+      unsubscribe_result  = cleanup_segment(members, @mc, list_id, current_user.id, days_old_threshold)
 
-      if (cleanup_result[:error_message])
-        flash[:error] = cleanup_result[:error_message]
-      elsif (cleanup_result[:number_unsubscribed] > 0)
-        flash[:notice] = "Succesfully unsubscribed #{cleanup_result[:number_unsubscribed]} "+
-          "member".pluralize(cleanup_result[:number_unsubscribed])
+      num_errors = unsubscribe_result["error_count"]
+      num_unsubscribed = unsubscribe_result["success_count"]
+
+      if (num_errors > 0)
+        flash[:error] = "Encountered #{num_errors} error(s) while processing unsubscribe"
+      end
+
+      if (num_unsubscribed > 0)
+        flash[:notice] = "Succesfully unsubscribed #{num_unsubscribed} "+
+          "member".pluralize(num_unsubscribed)
       else
         flash[:alert] = "No members unsubscribed"
       end

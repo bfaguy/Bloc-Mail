@@ -16,6 +16,10 @@ feature "User purges list" do
       expect(page).to have_content("Succesfully unsubscribed 1 member")
       expect(page).to_not have_content(email_address)
     end
+
+    scenario "does not record if no members unsubscribed" do
+      pending
+    end
   end
 
   context "when not logged in" do

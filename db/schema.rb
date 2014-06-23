@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140618223432) do
+ActiveRecord::Schema.define(version: 20140623220558) do
 
   create_table "purges", force: true do |t|
     t.string   "list_id"
@@ -19,6 +19,8 @@ ActiveRecord::Schema.define(version: 20140618223432) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "unsubscribed_count"
+    t.string   "list_name",          default: "0"
+    t.integer  "errors_count",       default: 0
   end
 
   add_index "purges", ["user_id"], name: "index_purges_on_user_id"

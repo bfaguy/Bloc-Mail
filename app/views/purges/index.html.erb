@@ -2,20 +2,27 @@
 <h2>Your MailChimp Purges Log</h2>
 
 <table class="table table-bordered">
-    <tr>
+  <tr>
+        <th>List Name</th>
         <th>List Id</th>
         <th>Name (email)</th>
-        <th>Time Purged</th>
-        <th>Number Unsubscribed</th>
+        <th>Time</th>
+        <th>Unsubscribed</th>
+        <th>Errors</th>
     </tr>
 
     <% @purges.each do |purge| %>
     <tr>
+      <td><%= purge.list_name %></td>
       <td><%= purge.list_id %></td>
       <% user = User.find(purge.user.id) %>
       <td><%= user.name+" ("+user.email+")" %></td>
-      <td><%= purge.created_at %></td>
+      <td>
+        <%= purge.created_at
+        .in_time_zone("Pacific Time (US & Canada)")
+        .strftime "%b %e %Y, %l:%M %p" %></td>
       <td><%= purge.unsubscribed_count %></td>
+      <td><%= purge.errors_count %></td>
     </tr>
     <% end %>
 

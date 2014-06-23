@@ -8,10 +8,13 @@ feature 'User can view logs of purges' do
 
     list_id = "123"
     time_created = Time.now
-    unsubscribed_count = 2
+    list_name = "Test List"
 
-    purge = create(:purge, list_id: list_id, user_id: user.id,
-                   created_at: time_created, unsubscribed_count: unsubscribed_count)
+    purge = create(:purge, list_id: list_id, list_name: list_name, user_id: user.id,
+                   created_at: time_created, 
+                   unsubscribed_count: 1,
+                   errors_count: 0)
+
 
     login(user)
     visit purges_path 
@@ -19,6 +22,10 @@ feature 'User can view logs of purges' do
     expect(page).to have_content(purge.list_id)
     expect(page).to have_content("Name (email)")
     expect(page).to have_content(user.name)
+    expect(page).to have_content("List Name")
+    expect(page).to have_content(purge.list_name)
+    expect(page).to have_content("Errors")
+    expect(page).to have_content("Unsubscribed")
 
   end
 

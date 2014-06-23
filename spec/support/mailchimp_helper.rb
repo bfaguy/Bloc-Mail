@@ -14,7 +14,11 @@ def mock_mc(list_name, list_id, email = 'admin@example.com')
 
   unsubscribe_result = {'complete'=> true}
 
-  lists_double = double('lists', list: list, unsubscribe: unsubscribe_result)
+  batch_unsubscribe_result = {'success_count' => 1, 'error_count' => 0}
+
+  lists_double = double('lists', list: list, 
+                        unsubscribe: unsubscribe_result, 
+                        batch_unsubscribe: batch_unsubscribe_result )
   mc_double = double('MailChimp', lists: lists_double)
   Mailchimp::API.stub(:new) { mc_double }
 
