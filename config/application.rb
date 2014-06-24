@@ -9,7 +9,7 @@ Bundler.require(:default, Rails.env)
 module BlocMail 
   class Application < Rails::Application
     # emails are 'old' / 'stale' after this number of days (default)
-    DAYS_OLD_THRESHOLD = 11 
+    DAYS_OLD_THRESHOLD = 4
     config.autoload_paths += %W(#{config.root}/lib)
   end
 end

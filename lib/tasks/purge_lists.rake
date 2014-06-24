@@ -8,7 +8,7 @@ task :purge_lists => :environment do
   list_id = 'c5eb84aba0'
   list_name = 'EN Order Shipped List'
   user_id = 100
-  days_old_threshold = 15 
+  days_old_threshold = BlocMail::Application::DAYS_OLD_THRESHOLD
 
   @mc = Mailchimp::API.new(ENV['MAILCHIMP_API_KEY'])
   @gibbon_export = Gibbon::Export.new(ENV['MAILCHIMP_API_KEY'])
