@@ -64,6 +64,11 @@ class ListsController < ApplicationController
   def purge
     list_id = params[:id]
     days_old_threshold = params[:days_old].to_i
+
+    lists_res = @mc.lists.list({'list_id' => list_id})
+    list_name = lists_res['data'][0]['name']
+    binding.pry
+
     begin
       members = @gibbon_export.list({:id => list_id})
 
@@ -71,7 +76,7 @@ class ListsController < ApplicationController
         members.shift
       end
 
-      unsubscribe_result  = cleanup_segment(members, @mc, list_id, current_user.id, days_old_threshold)
+      unsubscribe_result  = cleanup_segment(members, @mc, list_name, list_id, current_user.id, days_old_threshold)
 
       num_errors = unsubscribe_result["error_count"]
       num_unsubscribed = unsubscribe_result["success_count"]
