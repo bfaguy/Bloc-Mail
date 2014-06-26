@@ -1,4 +1,15 @@
 class RegistrationsController < Devise::RegistrationsController
+
+  def new
+    flash[:alert] = 'Registrations is not available at this time'
+    redirect_to root_path
+  end
+
+  def create
+    flash[:alert] = 'Registrations is not available at this time'
+    redirect_to root_path
+  end
+
   private
 
   def sign_up_params
