@@ -5,8 +5,8 @@
     <tr>
       <th>Title</th>
       <th>Id</th>
+      <th>List Id</th>
       <th>Date Created</th>
-      <th>Content Last Updated</th>
       <th>Last Sent</th>
     </tr>
 
@@ -15,8 +15,8 @@
     <tr>
       <td><a href="/campaigns/<%= campaign['id'] %>"><%= campaign['title'] %></a></td>
       <td><%= campaign['id'] %></td>
+      <td><%= campaign['list_id'] %></td>
       <td><%= campaign['create_time'] %></td>
-      <td><%= campaign['content_updated_time'] %></td>
       <td><%= campaign['send_time'] %></td>
     </tr>
     <% end %>
