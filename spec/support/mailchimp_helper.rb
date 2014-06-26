@@ -6,11 +6,13 @@ def setup_mc_mocks(list_name, list_id = '123', email = 'admin@example.com', num_
   mock_gibbon_list(num_members, email)
 end
 
-def mock_mc_campaigns(campaign_title)
+def mock_mc_campaigns(campaign_title, campaign_content = "none" )
   campaign_data = [{'title' => campaign_title}]
   campaign_list = {'data' => campaign_data}
 
-  campaigns_double = double('campaigns', list: campaign_list)
+  campaign_content_html = {'html' => campaign_content}
+
+  campaigns_double = double('campaigns', list: campaign_list, content: campaign_content_html)
   mc_double = double('MailChimp', campaigns: campaigns_double)
   Mailchimp::API.stub(:new) { mc_double }
 end
