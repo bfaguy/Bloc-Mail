@@ -30,10 +30,10 @@
   <% @members.each do |member_json| %>
     <% member = JSON.parse(member_json) %>
     <tr>
-      <td><%= member[1]+' '+member[2] %></td>
-      <td><%= member[0] %></td>
-      <td><%= member[6] %></td>
-      <td><%= member[3] %></td>
+      <td><%= member[@firstname_index]+' '+member[@lastname_index] %></td>
+      <td><%= member[@email_index] %></td>
+      <td><%= member[@confirmtime_index] %></td>
+      <td><%= member[@rating_index] %></td>
     </tr>
   <% end %>
 </table>

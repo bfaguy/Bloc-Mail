@@ -23,7 +23,22 @@ class ListsController < ApplicationController
       @list = lists_res['data'][0]
 
       @members = @gibbon_export.list({:id => list_id})
-      @members.shift
+      headers = JSON.parse(@members.shift)
+
+      for i in 0..headers.length
+        if headers[i] == "Email Address"
+          @email_index = i
+        elsif headers[i] == "First Name"
+          @firstname_index = i
+        elsif headers[i] == "Last Name"
+          @lastname_index = i
+        elsif headers[i] == "CONFIRM_TIME"
+          @confirmtime_index = i
+        elsif headers[i] == "MEMBER_RATING"
+          @rating_index = i
+        end
+      end
+
       @members = @members.paginate(page: params[:page], per_page:25)
 
     rescue Mailchimp::ListDoesNotExistError
