@@ -20,7 +20,7 @@ module ListUtil
     unless (number_unsubscribed == 0)
       purge_log = Purge.new()
       purge_log.list_name = list_name
-      purge_log.list_id = list_id 
+      purge_log.list_id = list_id
       purge_log.user_id = user_id
       purge_log.unsubscribed_count = number_unsubscribed
       purge_log.errors_count = unsubscribe_result["error_count"]
